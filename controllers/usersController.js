@@ -10,7 +10,7 @@ function usersIndex(req, res) {
 }
 
 function usersShow(req, res) {
-  User.findById(req.params.id).populate("hobbies").exec(function(err, user) {
+  User.findById(req.params.id).populate("makeups").exec(function(err, user) {
     if (err) return res.status(404).json({
       message: 'Something went wrong.'
     });
@@ -30,9 +30,28 @@ function usersUpdate(req, res) {
   });
 }
 
+function usersMakeupsSave(req, res) {
+  console.log(req.body);
+  var userId = req.body.user._id;
+  var makeupId = req.body.makeup._id;
+  User.findByIdAndUpdate({
+    _id: userId
+  }, {
+    $addToSet: {
+      makeups: makeupId
+    }
+  }, {
+    new: true
+  }).populate("makeups").exec(function(err, user) {
+    console.log(user);
+    if (err) return res.status(500).json(err);
+    res.status(201).json(user);
+  });
+}
 
 module.exports = {
   index: usersIndex,
   show: usersShow,
-  update: usersUpdate
+  update: usersUpdate,
+  makeupSave: usersMakeupsSave
 };

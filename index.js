@@ -63,5 +63,5 @@ app.get("/*", function(req, res) {
 });
 
 app.listen(config.port, function() {
-  console.log("hello hobbyist!!!!!!" + config.port);
+  console.log("hello makeupaddict!!!!!!" + config.port);
 });
